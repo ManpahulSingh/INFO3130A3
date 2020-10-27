@@ -5,7 +5,7 @@ import Game from './Game.js';
 // Create a new express application instance
 const app = express();
 
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("www"));
 
 app.get("/users/:uname", (req, res) => {
@@ -13,16 +13,16 @@ app.get("/users/:uname", (req, res) => {
 });
 
 let oGames = {};
-app.post("/sms", (req, res) =>{
+app.post("/sms", (req, res) => {
     let sFrom = req.body.From || req.body.from;
-    if(!oGames.hasOwnProperty(sFrom)){
+    if (!oGames.hasOwnProperty(sFrom)) {
         oGames[sFrom] = new Game();
     }
-    let sMessage = req.body.Body|| req.body.body;
+    let sMessage = req.body.Body || req.body.body;
     let aReply = oGames[sFrom].makeAMove(sMessage);
     res.setHeader('content-type', 'text/xml');
     let sResponse = "<Response>";
-    for(let n = 0; n < aReply.length; n++){
+    for (let n = 0; n < aReply.length; n++) {
         sResponse += "<Message>";
         sResponse += aReply[n];
         sResponse += "</Message>";
